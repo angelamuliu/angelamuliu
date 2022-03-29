@@ -1,0 +1,82 @@
+<html>
+<!-- There is no way to disable zooming on a desktop. The following below disables it for mobile form factor -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<head>
+
+<style>
+	body {
+		margin: 0;
+	}
+	.topBar {
+		width: 100vw;
+		text-align: center;
+		background-color: #e4e4e4;
+		position: fixed;
+		border-bottom: 1px solid grey;
+		z-index: 1000;
+	}
+	.topBarContents {
+		font-size: 24px;
+		padding: 10px;
+	}
+	.documentBody {
+		height: 100vh;
+	}
+	.blockA {
+		width: 500px;
+		height: 500px;
+		background-color: yellow;
+		outline: 1px solid black;
+	}
+
+</style>
+
+</head>
+
+<body>
+
+	<div class="topBar">
+		<div class="topBarContents">Add Signature</div>
+	</div>
+
+	<div class="documentBody">
+		<div class="blockA"></div>
+		<div class="blockA"></div>
+		<div class="blockA"></div>
+
+
+
+
+	</div>
+
+</body>
+
+<script>
+
+	// window.visualViewport.scale changes when you use pinch-zoom on tablets and laptops, it’s a different behavior.
+	// First, window.visualViewport.scale gives you the zoom level in supporting browsers (Chromium-based ones + Firefox Android + Safari iOS), BUT ONLY if you use pinch-zoom. With page zoom it always stays 1, as you saw. Obviously.
+	// Zoomed out all the way - 1, zoomed in all the way - 3
+	// https://developer.mozilla.org/en-US/docs/Web/API/Visual_Viewport_API
+	let topBar = document.querySelector(".topBar");
+	let topBarContents = document.querySelector(".topBarContents");
+
+	window.visualViewport.addEventListener('scroll', () => {
+			window.requestAnimationFrame(() => {
+				let scale = 1 / window.visualViewport.scale;
+				topBar.style.transform = "scale(1, " + scale + ")";
+				topBarContents.style.transform = "scale(" + scale + ", 1)";
+
+				topBar.style.left = window.visualViewport.offsetLeft;
+				let zoomOffset = (topBar.offsetHeight*scale) * (window.visualViewport.scale - 1)/2;
+				topBar.style.top = window.visualViewport.offsetTop - zoomOffset;
+				topBar.style.width = window.visualViewport.width;
+			});
+		}
+	);
+
+</script>
+
+
+
+</html>
