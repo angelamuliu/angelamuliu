@@ -83,6 +83,7 @@
 
         let prevTouchCoords;
         let numTouches = 0;
+        let d1;
 
         // TouchEvents are only in chrome and FF
         function onTouchStart(e) {
@@ -91,6 +92,9 @@
             if (numTouches === 0) {
                 numTouches = e.targetTouches.length;
                 prevTouchCoords = findTouchCenter(e);
+            }
+            if (numTouches === 2) {
+                d1 = dist(event);
             }
 
             logTouchEvent(e, "TOUCHSTART");
@@ -102,6 +106,13 @@
             posX += (prevTouchCoords.totalX - touchCenter.totalX)*2;
             posY += (prevTouchCoords.totalY - touchCenter.totalY)*2;
             prevTouchCoords = touchCenter;
+
+            // get the ratio
+            if (numTouches ===2) {
+                let rf = dist(event) / d1 * rs;
+                scale = rf > 0.1 ? rf : 0.1;
+            }
+
             fakeScale();
 
             logTouchEvent(e, "TOUCHMOVE");
@@ -133,6 +144,12 @@
             totalY = totalY / numTouches;
             return {totalX, totalY};
         }
+
+         //to retrive the pinch e
+         function dist(e) {
+            var zw = e.touches[0].pageX - e.touches[1].pageX, zh = e.touches[0].pageY - e.touches[1].pageY;
+            return Math.sqrt(zw * zw + zh * zh);
+          }
 
         // Apparently on Chrome + FF wheel is fired for pinch?
         // NO. Only touchevent.
