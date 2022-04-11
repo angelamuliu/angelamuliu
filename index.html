@@ -1,82 +1,138 @@
 <html>
-<!-- There is no way to disable zooming on a desktop. The following below disables it for mobile form factor -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<head>
+    <head>
+    </head>
 
-<style>
-	body {
-		margin: 0;
-	}
-	.topBar {
-		width: 100vw;
-		text-align: center;
-		background-color: #e4e4e4;
-		position: fixed;
-		border-bottom: 1px solid grey;
-		z-index: 1000;
-	}
-	.topBarContents {
-		font-size: 24px;
-		padding: 10px;
-	}
-	.documentBody {
-		height: 100vh;
-	}
-	.blockA {
-		width: 500px;
-		height: 500px;
-		background-color: yellow;
-		outline: 1px solid black;
-	}
-
-</style>
-
-</head>
-
-<body>
-
-	<div class="topBar">
-		<div class="topBarContents">Add Signature</div>
-	</div>
-
-	<div class="documentBody">
-		<div class="blockA"></div>
-		<div class="blockA"></div>
-		<div class="blockA"></div>
+    <style>
+        body {
+            margin: 0;
+            display: block;
+        }
+        .topBar {
+            width: 100%;
+            text-align: center;
+            background-color: #e4e4e4;
+            border-bottom: 1px solid grey;
+            z-index: 1000;
+        }
+        .moveArea {
+            overflow: hidden;
+            background-color: grey;
+        }
+        .topBarContents {
+            font-size: 24px;
+            padding: 10px;
+        }
+        .documentBody {
+            width: 8.5in;
+            min-height: 11in;
+            padding: 42px;
+            background-color: white;
+        }
+        .blockA {
+            width: 500px;
+            height: 500px;
+            background-color: yellow;
+            outline: 1px solid black;
+        }
+    </style>
 
 
+    <body>
+        <div class="topBar">
+            <div class="topBarContents">Add Signature</div>
+        </div>
 
+        <div class="moveArea">
+            <div class="documentBody">
+                <div class="blockA"></div>
+                <div class="blockA"></div>
+                <div class="blockA"></div>
+            </div>
+        </div>
+    </body>
 
-	</div>
+    <script>
 
-</body>
+        let moveArea = document.querySelector(".moveArea");
+        moveArea.addEventListener("wheel", onWheel);
+        moveArea.addEventListener("touchstart", onTouchStart);
+        moveArea.addEventListener("touchmove", onTouchMove);
+        moveArea.addEventListener("touchend", onTouchEnd);
+        moveArea.addEventListener("touchcancel", onTouchCancel);
+        moveArea.addEventListener("gesturestart", onGestureStart);
+        moveArea.addEventListener("gesturechange", onGestureChange);
+        moveArea.addEventListener("gestureend", onGestureEnd);
 
-<script>
+        scale = 1;
+        posX = 0;
+        posY = 0;
 
-	// window.visualViewport.scale changes when you use pinch-zoom on tablets and laptops, it’s a different behavior.
-	// First, window.visualViewport.scale gives you the zoom level in supporting browsers (Chromium-based ones + Firefox Android + Safari iOS), BUT ONLY if you use pinch-zoom. With page zoom it always stays 1, as you saw. Obviously.
-	// Zoomed out all the way - 1, zoomed in all the way - 3
-	// https://developer.mozilla.org/en-US/docs/Web/API/Visual_Viewport_API
-	let topBar = document.querySelector(".topBar");
-	let topBarContents = document.querySelector(".topBarContents");
+        // Apparently on Chrome + FF wheel is fired for pinch?
 
-	window.visualViewport.addEventListener('scroll', () => {
-			window.requestAnimationFrame(() => {
-				let scale = 1 / window.visualViewport.scale;
-				topBar.style.transform = "scale(1, " + scale + ")";
-				topBarContents.style.transform = "scale(" + scale + ", 1)";
+        function onWheel(e) {
+            console.log("wheel event: "+e);
+            console.log("WHEEL-ctrl:"+e.ctrlKey+"/deltaXY"+e.deltaX+","+e.deltaY);
+            e.preventDefault();
+            if (e.ctrlKey) {
+                let newScale = scale;
+                newScale -= e.deltaY * 0.01;
+                // Do not allow scale to go negative (which weirdly flips the image)
+                scale = newScale > 0.1 ? newScale : 0.1;
+            } else {
+                posX -= e.deltaX * 2;
+                posY -= e.deltaY * 2;
+            }
+            fakeScale();
+        }
 
-				topBar.style.left = window.visualViewport.offsetLeft;
-				let zoomOffset = (topBar.offsetHeight*scale) * (window.visualViewport.scale - 1)/2;
-				topBar.style.top = window.visualViewport.offsetTop - zoomOffset;
-				topBar.style.width = window.visualViewport.width;
-			});
-		}
-	);
+        function fakeScale() {
+            window.requestAnimationFrame(() => {
+                let val = `translate3D(${posX}px, ${posY}px, 0px) scale(${scale})`;
+                let documentBody = document.querySelector(".documentBody");
+                documentBody.style.transform = val;
+            });
+        }
 
-</script>
+        // TouchEvents are only in chrome and FF
+        function onTouchStart(e) {
+            console.log("touchstart event: "+e);
+            logTouchEvent(e, "TOUCHSTART");
+        }
+        function onTouchMove(e) {
+            console.log("touchmove event: "+e);
+            logTouchEvent(e, "TOUCHMOVE");
+        }
+        function onTouchEnd(e) {
+            console.log("touchend event: "+e);
+            logTouchEvent(e, "TOUCHEND");
+        }
+        function onTouchCancel(e) {
+            console.log("touchcancel event: "+e);
+            logTouchEvent(e, "TOUCHCANCEL");
+        }
 
+        function logTouchEvent(e, type) {
+            console.log(type+"/TOUCH-altKey"+e.altKey+"/changedTouches"+e.changedTouches.length+"/touches"+e.touches.length+"/targetTouches"+e.targetTouches.length+"/rotation"+e.rotation+"/scale"+e.scale);
+        }
+
+        // On Safari only, gestureEvent
+        function onGestureStart(e) {
+            console.log("gesturestart event: "+e);
+            logGestureEvent(e);
+        }  
+        function onGestureChange(e) {
+            console.log("gesturechange event: "+e);
+            logGestureEvent(e);
+        }  
+        function onGestureEnd(e) {
+            console.log("gestureend event: "+e);
+            logGestureEvent(e);
+        }
+
+        function logGestureEvent(e) {
+            console.log("GESTURE-rotation"+e.rotation+"/scale"+e.scale);
+        }
+    </script>
 
 
 </html>
