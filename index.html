@@ -67,6 +67,24 @@
         let gesture = null;
         let initial_touches;
 
+        function midpoint(touches) {
+            let [t1, t2] = touches;
+            return {
+                x: (t1.clientX + t2.clientX) / 2, 
+                y: (t1.clientY + t2.clientY) / 2
+            };
+        }
+        function distance(touches) {
+            let [t1, t2] = touches;
+            return Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+        }
+
+        function angle(touches) {
+            let [t1, t2] = touches;
+            let dx = t2.clientX - t1.clientX;
+            let dy = t2.clientY - t1.clientY;
+            return Math.atan2(dy, dx) * 180 / Math.PI;
+        }
         function watchTouches(e) {
             if (e.touches.length === 2) {
                 initial_touches = e.touches;
