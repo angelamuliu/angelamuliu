@@ -58,7 +58,7 @@
         moveArea.addEventListener("touchstart", onTouchStart);
         moveArea.addEventListener("touchmove", onTouchMove);
         moveArea.addEventListener("touchend", onTouchEnd);
-        moveArea.addEventListener("touchcancel", onTouchCancel);
+        // moveArea.addEventListener("touchcancel", onTouchCancel);
         // moveArea.addEventListener("gesturestart", onGestureStart);
         // moveArea.addEventListener("gesturechange", onGestureChange);
         // moveArea.addEventListener("gestureend", onGestureEnd);
@@ -80,9 +80,14 @@
         // targetTouches - Touchlist
         // in touchlist - touch.clientX, touch.clientY
 
+
+        let startingTouchCoords;
+
         // TouchEvents are only in chrome and FF
         function onTouchStart(e) {
             e.preventDefault();
+
+            startingTouchCoords = findTouchCenter(e);
 
             logTouchEvent(e, "TOUCHSTART");
         }
@@ -90,8 +95,8 @@
             e.preventDefault();
 
             let touchCenter = findTouchCenter(e);
-            posX += touchCenter.totalX;
-            posY += touchCenter.totalY;
+            posX += startingTouchCoords.totalX - touchCenter.totalX;
+            posY += startingTouchCoords.totalY - touchCenter.totalY;
             fakeScale();
 
             logTouchEvent(e, "TOUCHMOVE");
@@ -99,12 +104,9 @@
         function onTouchEnd(e) {
             e.preventDefault();
 
-            logTouchEvent(e, "TOUCHEND");
-        }
-        function onTouchCancel(e) {
-            e.preventDefault();
+            startingTouchCoords = null;
 
-            logTouchEvent(e, "TOUCHCANCEL");
+            logTouchEvent(e, "TOUCHEND");
         }
 
         function logTouchEvent(e, type) {
