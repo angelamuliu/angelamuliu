@@ -109,8 +109,10 @@
         function onTouchEnd(e) {
             e.preventDefault();
 
-            prevTouchCoords = null;
-            numTouches = 0;
+            if (e.targetTouches.length = 0) {
+                prevTouchCoords = null;
+                numTouches = 0;
+            }
 
             logTouchEvent(e, "TOUCHEND");
         }
@@ -129,6 +131,9 @@
             }
             totalX = totalX / e.targetTouches.length;
             totalY = totalY / e.targetTouches.length;
+            if (prevTouchCoords.totalX - totalX > 100) {
+                let foobar = 100;
+            }
             return {totalX, totalY};
         }
 
