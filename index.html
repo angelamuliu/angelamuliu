@@ -81,13 +81,13 @@
         // in touchlist - touch.clientX, touch.clientY
 
 
-        let startingTouchCoords;
+        let prevTouchCoords;
 
         // TouchEvents are only in chrome and FF
         function onTouchStart(e) {
             e.preventDefault();
 
-            startingTouchCoords = findTouchCenter(e);
+            prevTouchCoords = findTouchCenter(e);
 
             logTouchEvent(e, "TOUCHSTART");
         }
@@ -95,8 +95,9 @@
             e.preventDefault();
 
             let touchCenter = findTouchCenter(e);
-            posX += startingTouchCoords.totalX - touchCenter.totalX;
-            posY += startingTouchCoords.totalY - touchCenter.totalY;
+            posX += prevTouchCoords.totalX - touchCenter.totalX;
+            posY += prevTouchCoords.totalY - touchCenter.totalY;
+            prevTouchCoords = touchCenter;
             fakeScale();
 
             logTouchEvent(e, "TOUCHMOVE");
@@ -104,7 +105,7 @@
         function onTouchEnd(e) {
             e.preventDefault();
 
-            startingTouchCoords = null;
+            prevTouchCoords = null;
 
             logTouchEvent(e, "TOUCHEND");
         }
