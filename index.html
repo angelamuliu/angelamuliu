@@ -116,8 +116,8 @@
             let totalY = 0;
             for (let i=0; i<e.targetTouches.length; i++) {
                 let touch = e.targetTouches[i];
-                totalX += touch.clientX;
-                totalY += touch.clientY;
+                totalX += touch.pageX;
+                totalY += touch.pageY;
             }
             totalX = totalX / e.targetTouches.length;
             totalY = totalY / e.targetTouches.length;
