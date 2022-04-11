@@ -99,7 +99,7 @@
             e.preventDefault();
 
             let touchCenter = findTouchCenter(e);
-            if (prevTouchCoords && (prevTouchCoords.totalX - touchCenter.totalX > 50)) {
+            if (prevTouchCoords && (Math.abs(prevTouchCoords.totalX - touchCenter.totalX) > 50)) {
                 posX += (prevTouchCoords.totalX - touchCenter.totalX)*2;
                 posY += (prevTouchCoords.totalY - touchCenter.totalY)*2;
             }
