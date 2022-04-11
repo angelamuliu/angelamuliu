@@ -131,7 +131,7 @@
             }
             totalX = totalX / e.targetTouches.length;
             totalY = totalY / e.targetTouches.length;
-            if (prevTouchCoords.totalX - totalX > 100) {
+            if (prevTouchCoords && (prevTouchCoords.totalX - totalX > 100)) {
                 let foobar = 100;
             }
             return {totalX, totalY};
