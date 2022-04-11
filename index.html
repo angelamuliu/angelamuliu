@@ -96,7 +96,7 @@
 
             let touchCenter = findTouchCenter(e);
             posX += startingTouchCoords.totalX - touchCenter.totalX;
-            posY += startingTouchCoords.totalY - touchCenter.totalY;
+            posY += startingTouchCoords.totalY + touchCenter.totalY;
             fakeScale();
 
             logTouchEvent(e, "TOUCHMOVE");
@@ -118,8 +118,8 @@
             let totalY = 0;
             for (let i=0; i<e.targetTouches.length; i++) {
                 let touch = e.targetTouches[i];
-                totalX += touch.pageX;
-                totalY += touch.pageY;
+                totalX += touch.screenX;
+                totalY += touch.screenY;
             }
             totalX = totalX / e.targetTouches.length;
             totalY = totalY / e.targetTouches.length;
