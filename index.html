@@ -129,8 +129,8 @@
                 totalX += touch.screenX;
                 totalY += touch.screenY;
             }
-            totalX = totalX / e.numTouches;
-            totalY = totalY / e.numTouches;
+            totalX = totalX / numTouches;
+            totalY = totalY / numTouches;
             return {totalX, totalY};
         }
 
