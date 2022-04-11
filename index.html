@@ -82,12 +82,16 @@
 
 
         let prevTouchCoords;
+        let numTouches = 0;
 
         // TouchEvents are only in chrome and FF
         function onTouchStart(e) {
             e.preventDefault();
 
-            prevTouchCoords = findTouchCenter(e);
+            if (numTouches === 0) {
+                prevTouchCoords = findTouchCenter(e);
+                numTouches = e.targetTouches.length;
+            }
 
             logTouchEvent(e, "TOUCHSTART");
         }
@@ -106,6 +110,7 @@
             e.preventDefault();
 
             prevTouchCoords = null;
+            numTouches = 0;
 
             logTouchEvent(e, "TOUCHEND");
         }
