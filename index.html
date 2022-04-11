@@ -99,10 +99,8 @@
             e.preventDefault();
 
             let touchCenter = findTouchCenter(e);
-            if (prevTouchCoords && (Math.abs(prevTouchCoords.totalX - touchCenter.totalX) > 50)) {
-                posX += (prevTouchCoords.totalX - touchCenter.totalX)*2;
-                posY += (prevTouchCoords.totalY - touchCenter.totalY)*2;
-            }
+            posX += (prevTouchCoords.totalX - touchCenter.totalX)*2;
+            posY += (prevTouchCoords.totalY - touchCenter.totalY)*2;
             prevTouchCoords = touchCenter;
             fakeScale();
 
@@ -126,13 +124,13 @@
         function findTouchCenter(e) {
             let totalX = 0;
             let totalY = 0;
-            for (let i=0; i<e.targetTouches.length; i++) {
+            for (let i=0; i<numTouches; i++) {
                 let touch = e.targetTouches[i];
                 totalX += touch.screenX;
                 totalY += touch.screenY;
             }
-            totalX = totalX / e.targetTouches.length;
-            totalY = totalY / e.targetTouches.length;
+            totalX = totalX / e.numTouches;
+            totalY = totalY / e.numTouches;
             return {totalX, totalY};
         }
 
