@@ -99,8 +99,10 @@
             e.preventDefault();
 
             let touchCenter = findTouchCenter(e);
-            posX += prevTouchCoords.totalX - touchCenter.totalX;
-            posY += prevTouchCoords.totalY - touchCenter.totalY;
+            if (prevTouchCoords && (prevTouchCoords.totalX - totalX > 50)) {
+                posX += (prevTouchCoords.totalX - touchCenter.totalX)*2;
+                posY += (prevTouchCoords.totalY - touchCenter.totalY)*2;
+            }
             prevTouchCoords = touchCenter;
             fakeScale();
 
@@ -131,9 +133,6 @@
             }
             totalX = totalX / e.targetTouches.length;
             totalY = totalY / e.targetTouches.length;
-            if (prevTouchCoords && (prevTouchCoords.totalX - totalX > 100)) {
-                let foobar = 100;
-            }
             return {totalX, totalY};
         }
 
