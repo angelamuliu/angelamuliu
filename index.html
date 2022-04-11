@@ -54,36 +54,20 @@
     <script>
 
         let moveArea = document.querySelector(".moveArea");
-        moveArea.addEventListener("wheel", onWheel);
+        // moveArea.addEventListener("wheel", onWheel);
         moveArea.addEventListener("touchstart", onTouchStart);
         moveArea.addEventListener("touchmove", onTouchMove);
         moveArea.addEventListener("touchend", onTouchEnd);
         moveArea.addEventListener("touchcancel", onTouchCancel);
-        moveArea.addEventListener("gesturestart", onGestureStart);
-        moveArea.addEventListener("gesturechange", onGestureChange);
-        moveArea.addEventListener("gestureend", onGestureEnd);
+        // moveArea.addEventListener("gesturestart", onGestureStart);
+        // moveArea.addEventListener("gesturechange", onGestureChange);
+        // moveArea.addEventListener("gestureend", onGestureEnd);
 
         scale = 1;
         posX = 0;
         posY = 0;
 
-        // Apparently on Chrome + FF wheel is fired for pinch?
 
-        function onWheel(e) {
-            console.log("wheel event: "+e);
-            console.log("WHEEL-ctrl:"+e.ctrlKey+"/deltaXY"+e.deltaX+","+e.deltaY);
-            e.preventDefault();
-            if (e.ctrlKey) {
-                let newScale = scale;
-                newScale -= e.deltaY * 0.01;
-                // Do not allow scale to go negative (which weirdly flips the image)
-                scale = newScale > 0.1 ? newScale : 0.1;
-            } else {
-                posX -= e.deltaX * 2;
-                posY -= e.deltaY * 2;
-            }
-            fakeScale();
-        }
 
         function fakeScale() {
             window.requestAnimationFrame(() => {
@@ -93,21 +77,33 @@
             });
         }
 
+        // targetTouches - Touchlist
+        // in touchlist - touch.clientX, touch.clientY
+
         // TouchEvents are only in chrome and FF
         function onTouchStart(e) {
-            console.log("touchstart event: "+e);
+            e.preventDefault();
+
             logTouchEvent(e, "TOUCHSTART");
         }
         function onTouchMove(e) {
-            console.log("touchmove event: "+e);
+            e.preventDefault();
+
+            let touchCenter = findTouchCenter(e);
+            posX -= touchCenter.totalX * 2;
+            posY -= touchCenter.totalY * 2;
+            fakeScale();
+
             logTouchEvent(e, "TOUCHMOVE");
         }
         function onTouchEnd(e) {
-            console.log("touchend event: "+e);
+            e.preventDefault();
+
             logTouchEvent(e, "TOUCHEND");
         }
         function onTouchCancel(e) {
-            console.log("touchcancel event: "+e);
+            e.preventDefault();
+
             logTouchEvent(e, "TOUCHCANCEL");
         }
 
@@ -115,23 +111,54 @@
             console.log(type+"/TOUCH-altKey"+e.altKey+"/changedTouches"+e.changedTouches.length+"/touches"+e.touches.length+"/targetTouches"+e.targetTouches.length+"/rotation"+e.rotation+"/scale"+e.scale);
         }
 
-        // On Safari only, gestureEvent
-        function onGestureStart(e) {
-            console.log("gesturestart event: "+e);
-            logGestureEvent(e);
-        }  
-        function onGestureChange(e) {
-            console.log("gesturechange event: "+e);
-            logGestureEvent(e);
-        }  
-        function onGestureEnd(e) {
-            console.log("gestureend event: "+e);
-            logGestureEvent(e);
+        function findTouchCenter(e) {
+            let totalX = 0;
+            let totalY = 0;
+            for (let i=0; i<e.targetTouches.length; i++) {
+                let touch = e.targetTouches[i];
+                totalX += touch.clientX;
+                totalY += touch.clientY;
+            }
+            totalX = totalX / e.targetTouches.length;
+            totalY = totalY / e.targetTouches.length;
+            return {totalX, totalY};
         }
 
-        function logGestureEvent(e) {
-            console.log("GESTURE-rotation"+e.rotation+"/scale"+e.scale);
-        }
+        // Apparently on Chrome + FF wheel is fired for pinch?
+        // NO. Only touchevent.
+        // function onWheel(e) {
+        //     console.log("wheel event: "+e);
+        //     console.log("WHEEL-ctrl:"+e.ctrlKey+"/deltaXY"+e.deltaX+","+e.deltaY);
+        //     e.preventDefault();
+        //     if (e.ctrlKey) {
+        //         let newScale = scale;
+        //         newScale -= e.deltaY * 0.01;
+        //         // Do not allow scale to go negative (which weirdly flips the image)
+        //         scale = newScale > 0.1 ? newScale : 0.1;
+        //     } else {
+        //         posX -= e.deltaX * 2;
+        //         posY -= e.deltaY * 2;
+        //     }
+        //     fakeScale();
+        // }
+
+        // // On Safari only, gestureEvent
+        // function onGestureStart(e) {
+        //     console.log("gesturestart event: "+e);
+        //     logGestureEvent(e);
+        // }  
+        // function onGestureChange(e) {
+        //     console.log("gesturechange event: "+e);
+        //     logGestureEvent(e);
+        // }  
+        // function onGestureEnd(e) {
+        //     console.log("gestureend event: "+e);
+        //     logGestureEvent(e);
+        // }
+
+        // function logGestureEvent(e) {
+        //     console.log("GESTURE-rotation"+e.rotation+"/scale"+e.scale);
+        // }
     </script>
 
 
