@@ -90,8 +90,8 @@
             e.preventDefault();
 
             let touchCenter = findTouchCenter(e);
-            posX -= touchCenter.totalX * 2;
-            posY -= touchCenter.totalY * 2;
+            posX = touchCenter.totalX;
+            posY = touchCenter.totalY;
             fakeScale();
 
             logTouchEvent(e, "TOUCHMOVE");
