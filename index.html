@@ -89,8 +89,8 @@
             e.preventDefault();
 
             if (numTouches === 0) {
-                prevTouchCoords = findTouchCenter(e);
                 numTouches = e.targetTouches.length;
+                prevTouchCoords = findTouchCenter(e);
             }
 
             logTouchEvent(e, "TOUCHSTART");
