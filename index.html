@@ -201,7 +201,7 @@
         let el = document.querySelector(".documentBody");
         let container = document.querySelector(".moveArea");
 
-        let speedFactor = 1 / Math.log(el.offsetHeight);
+        let speedFactor = 1 / (Math.log(el.offsetHeight) * 2);
 
 
         // TOUCH EVENTS
