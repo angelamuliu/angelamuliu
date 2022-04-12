@@ -62,8 +62,8 @@
 
         let origin;
         let init_m = new DOMMatrix();
-        let el = document.querySelector(".moveArea");
-        let container = document.querySelector(".container");
+        let el = document.querySelector(".documentBody");
+        let container = document.querySelector(".moveArea");
 
 
         // TOUCH EVENTS
@@ -93,7 +93,7 @@
                 initial_touches = e.touches;
                 gesture = {
                     scale: 1,
-                    rotation: 0,
+                    // rotation: 0,
                     translation: { x: 0, y: 0 },
                     origin: midpoint(initial_touches)
                 };
@@ -121,7 +121,7 @@
                 let mp_curr = midpoint(e.touches);
                 gesture = {
                     scale: distance(e.touches) / distance(initial_touches),
-                    rotation: angle(e.touches) - angle(initial_touches),
+                    // rotation: angle(e.touches) - angle(initial_touches),
                     translation: { 
                         x: mp_curr.x - mp_init.x, 
                         y: mp_curr.y - mp_init.y
@@ -154,7 +154,7 @@
             return new DOMMatrix()
                 .translate(origin.x, origin.y)
                 .translate(gesture.translation.x || 0, gesture.translation.y || 0)
-                .rotate(gesture.rotation || 0)
+                // .rotate(gesture.rotation || 0)
                 .scale(gesture.scale || 1)
                 .translate(-origin.x, -origin.y);
         }
