@@ -1,471 +1,74 @@
 <html>
-    <head>
-    </head>
+<!-- There is no way to disable zooming on a desktop. The following below disables it for mobile form factor -->
+<!-- for reference -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<head>
 
-    <style>
-        body {
-            margin: 0;
-            display: block;
-            overflow: hidden;
+<style>
+    body {
+        margin: 0;
+    }
+    .topBar {
+        width: 100vw;
+        text-align: center;
+        background-color: #e4e4e4;
+        position: fixed;
+        border-bottom: 1px solid grey;
+        z-index: 1000;
+    }
+    .topBarContents {
+        font-size: 24px;
+        padding: 10px;
+    }
+    .documentBody {
+        height: 100vh;
+    }
+    .blockA {
+        width: 500px;
+        height: 500px;
+        background-color: yellow;
+        outline: 1px solid black;
+    }
+</style>
+
+</head>
+
+<body>
+
+    <div class="topBar">
+        <div class="topBarContents">Add Signature</div>
+    </div>
+
+    <div class="documentBody">
+        <div class="blockA"></div>
+        <div class="blockA"></div>
+        <div class="blockA"></div>
+    </div>
+
+</body>
+
+<script>
+    // window.visualViewport.scale changes when you use pinch-zoom on tablets and laptops, it’s a different behavior.
+    // First, window.visualViewport.scale gives you the zoom level in supporting browsers (Chromium-based ones + Firefox Android + Safari iOS), BUT ONLY if you use pinch-zoom. With page zoom it always stays 1, as you saw. Obviously.
+    // Zoomed out all the way - 1, zoomed in all the way - 3
+    // https://developer.mozilla.org/en-US/docs/Web/API/Visual_Viewport_API
+    let topBar = document.querySelector(".topBar");
+    let topBarContents = document.querySelector(".topBarContents");
+
+    window.visualViewport.addEventListener('scroll', () => {
+            window.requestAnimationFrame(() => {
+                let scale = 1 / window.visualViewport.scale;
+                topBar.style.transform = "scale(1, " + scale + ")";
+                topBarContents.style.transform = "scale(" + scale + ", 1)";
+
+                topBar.style.left = window.visualViewport.offsetLeft;
+                let zoomOffset = (topBar.offsetHeight*scale) * (window.visualViewport.scale - 1)/2;
+                topBar.style.top = window.visualViewport.offsetTop - zoomOffset;
+                topBar.style.width = window.visualViewport.width;
+            });
         }
-        .topBar {
-            width: 100%;
-            text-align: center;
-            background-color: #e4e4e4;
-            border-bottom: 1px solid grey;
-            z-index: 1000;
-        }
-        .moveArea {
-            overflow: hidden;
-            background-color: grey;
-        }
-        .topBarContents {
-            font-size: 24px;
-            padding: 10px;
-        }
-        .documentBody {
-            width: 8.5in;
-            min-height: 11in;
-            padding: 42px;
-            background-color: white;
-        }
-        .blockA {
-            width: 500px;
-            height: 500px;
-            background-color: yellow;
-            outline: 1px solid black;
-        }
-        p {
-            font-size: 20px;
-        }
-        img {
-            max-width: 100%;
-        }
-    </style>
+    );
 
-
-    <body>
-        <div class="topBar">
-            <div class="topBarContents">Add Signature</div>
-        </div>
-
-        <div class="moveArea">
-            <div class="documentBody">
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <img src="https://signuporgtest1648592320109.test1.lightning.pc-rnd.force.com/resource/1648684244000/image4"/>
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <img src="https://signuporgtest1648592320109.test1.lightning.pc-rnd.force.com/resource/1648684244000/image4"/>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <img src="https://signuporgtest1648592320109.test1.lightning.pc-rnd.force.com/resource/1648684244000/image4"/>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <img src="https://signuporgtest1648592320109.test1.lightning.pc-rnd.force.com/resource/1648684244000/image4"/>
-                <img src="https://signuporgtest1648592320109.test1.lightning.pc-rnd.force.com/resource/1648684244000/image4"/>
-                <img src="https://signuporgtest1648592320109.test1.lightning.pc-rnd.force.com/resource/1648684244000/image4"/>
-                <img src="https://signuporgtest1648592320109.test1.lightning.pc-rnd.force.com/resource/1648684244000/image4"/>
-                <img src="https://signuporgtest1648592320109.test1.lightning.pc-rnd.force.com/resource/1648684244000/image4"/>
-                <img src="https://signuporgtest1648592320109.test1.lightning.pc-rnd.force.com/resource/1648684244000/image4"/>
-                <img src="https://signuporgtest1648592320109.test1.lightning.pc-rnd.force.com/resource/1648684244000/image4"/>
-                <img src="https://signuporgtest1648592320109.test1.lightning.pc-rnd.force.com/resource/1648684244000/image4"/>
-                <img src="https://signuporgtest1648592320109.test1.lightning.pc-rnd.force.com/resource/1648684244000/image4"/>
-                <img src="https://signuporgtest1648592320109.test1.lightning.pc-rnd.force.com/resource/1648684244000/image4"/>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <div class="blockA"></div>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-                <p>Nam congue pretium odio ut gravida. Etiam rutrum molestie risus vel semper. Nam tristique arcu justo, vitae rhoncus ex tempus id. Donec massa quam, gravida dignissim est ac, gravida semper odio. Donec rhoncus tempor ullamcorper. Quisque vel diam nec ligula facilisis vulputate vel sit amet orci. Quisque ornare, erat sed aliquet euismod, dui odio posuere diam, non rhoncus odio velit sed metus.</p>
-            </div>
-        </div>
-    </body>
-
-    <script>
-
-        let origin;
-        let init_m = new DOMMatrix();
-        let el = document.querySelector(".documentBody");
-        let container = document.querySelector(".moveArea");
-
-        let speedFactor = 1 / (Math.log(el.offsetHeight) * 10);
-
-
-        // TOUCH EVENTS
-        let gesture = null;
-        let initial_touches;
-
-        function midpoint(touches) {
-            let [t1, t2] = touches;
-            return {
-                x: (t1.clientX + t2.clientX) / 2, 
-                y: (t1.clientY + t2.clientY) / 2
-            };
-        }
-        function distance(touches) {
-            let [t1, t2] = touches;
-            return Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
-        }
-
-        function watchTouches(e) {
-            if (e.touches.length === 2) {
-                initial_touches = e.touches;
-                gesture = {
-                    scale: 1,
-                    // rotation: 0,
-                    translation: { x: 0, y: 0 },
-                    origin: midpoint(initial_touches)
-                };
-                if (e.type === 'touchstart') {
-                    e.preventDefault();
-                }
-                startGesture(gesture);
-                el.addEventListener('touchmove', touchMove, { passive: false });
-                el.addEventListener('touchend', watchTouches);
-                el.addEventListener('touchcancel', watchTouches);
-            } else if (gesture) {
-                endGesture(gesture);
-                gesture = null;
-                el.removeEventListener('touchmove', touchMove);
-                el.removeEventListener('touchend', watchTouches);
-                el.removeEventListener('touchcancel', watchTouches);
-            }
-        }
-        container.addEventListener('touchstart', watchTouches);
-
-
-        function touchMove(e) {
-            if (e.touches.length === 2) {
-                let mp_init = midpoint(initial_touches);
-                let mp_curr = midpoint(e.touches);
-                gesture = {
-                    scale: distance(e.touches) / distance(initial_touches),
-                    translation: { 
-                        x: (mp_curr.x - mp_init.x)*speedFactor, 
-                        y: (mp_curr.y - mp_init.y)*speedFactor
-                    },
-                    origin: mp_init
-                };
-                doGesture(gesture);
-                e.preventDefault();
-            }
-        }
-
-
-        // TRANSFORMATIONS
-        function getOrigin(el, gesture) {
-            if (el instanceof HTMLElement) {
-                let rect = el.getBoundingClientRect();
-                return {
-                    x: gesture.origin.x - rect.x,
-                    y: gesture.origin.y - rect.y
-                }
-            }
-            if (el instanceof SVGElement) {
-                let matrix = el.ownerSVGElement.getScreenCTM().inverse();
-                let pt = new DOMPoint(gesture.origin.x, gesture.origin.y); 
-                return pt.matrixTransform(matrix);
-            }
-            throw new Error('Expected HTML or SVG element');
-        };
-        function gestureToMatrix(gesture, origin) {
-            return new DOMMatrix()
-                .translate(origin.x, origin.y)
-                .translate(gesture.translation.x || 0, gesture.translation.y || 0)
-                // .rotate(gesture.rotation || 0)
-                .scale(gesture.scale || 1)
-                .translate(-origin.x, -origin.y);
-        }
-        function applyMatrix(el, matrix) {
-            if (el instanceof HTMLElement) {
-                el.style.transform = matrix;
-                return;
-            }
-            if (el instanceof SVGElement) {
-                let transformList = el.transform.baseVal; 
-                let transform = transformList.createSVGTransformFromMatrix(matrix);
-                transformList.initialize(transform);
-                return;
-            }
-            throw new Error('Expected HTML or SVG element');
-        }
-
-
-        // GESTURE UNIFICATION
-        function startGesture(gesture) {
-            if (el instanceof HTMLElement) {
-                /*
-                    Clear the element's transform so we can 
-                    measure its original position wrt. the screen.
-
-                    (We don't need to restore it because it gets 
-                    overwritten by `applyMatrix()` anyways.)
-                 */
-                el.style.transform = '';
-            }
-            origin = getOrigin(el, gesture);
-            applyMatrix(el, gestureToMatrix(gesture, origin).multiply(init_m));
-        }
-        function doGesture(gesture) {
-            applyMatrix(el, gestureToMatrix(gesture, origin).multiply(init_m));
-        };
-        function endGesture(gesture) {
-            init_m = gestureToMatrix(gesture, origin).multiply(init_m);
-            applyMatrix(el, init_m);
-        };
-
-
-
-
-        // ------------
-        // let moveArea = document.querySelector(".moveArea");
-        // // moveArea.addEventListener("wheel", onWheel);
-        // moveArea.addEventListener("touchstart", onTouchStart);
-        // moveArea.addEventListener("touchmove", onTouchMove);
-        // moveArea.addEventListener("touchend", onTouchEnd);
-        // // moveArea.addEventListener("touchcancel", onTouchCancel);
-        // // moveArea.addEventListener("gesturestart", onGestureStart);
-        // // moveArea.addEventListener("gesturechange", onGestureChange);
-        // // moveArea.addEventListener("gestureend", onGestureEnd);
-
-        // scale = 1;
-        // posX = 0;
-        // posY = 0;
-
-        // function fakeScale() {
-        //     window.requestAnimationFrame(() => {
-        //         let val = `translate3D(${posX}px, ${posY}px, 0px) scale(${scale})`;
-        //         let documentBody = document.querySelector(".documentBody");
-        //         documentBody.style.transform = val;
-        //     });
-        // }
-
-        // // targetTouches - Touchlist
-        // // in touchlist - touch.clientX, touch.clientY
-
-
-        // let prevTouchCoords;
-        // let numTouches = 0;
-        // let d1;
-
-        // // TouchEvents are only in chrome and FF
-        // function onTouchStart(e) {
-        //     e.preventDefault();
-
-        //     if (numTouches === 0) {
-        //         numTouches = e.targetTouches.length;
-        //         prevTouchCoords = findTouchCenter(e);
-        //     }
-        //     if (e.targetTouches.length === 2) {
-        //         d1 = dist(event);
-        //     }
-
-        //     logTouchEvent(e, "TOUCHSTART");
-        // }
-        // function onTouchMove(e) {
-        //     e.preventDefault();
-
-        //     let touchCenter = findTouchCenter(e);
-        //     posX += (prevTouchCoords.totalX - touchCenter.totalX)*2;
-        //     posY += (prevTouchCoords.totalY - touchCenter.totalY)*2;
-        //     prevTouchCoords = touchCenter;
-
-        //     // get the ratio
-        //     if (e.targetTouches.length ===2) {
-        //         let rf = dist(event) / d1 * rs;
-        //         scale = rf > 0.1 ? rf : 0.1;
-        //     }
-
-        //     fakeScale();
-
-        //     logTouchEvent(e, "TOUCHMOVE");
-        // }
-        // function onTouchEnd(e) {
-        //     e.preventDefault();
-
-        //     if (e.targetTouches.length === 0) {
-        //         prevTouchCoords = null;
-        //         numTouches = 0;
-        //     }
-
-        //     logTouchEvent(e, "TOUCHEND");
-        // }
-
-        // function logTouchEvent(e, type) {
-        //     console.log(type+"/TOUCH-altKey"+e.altKey+"/changedTouches"+e.changedTouches.length+"/touches"+e.touches.length+"/targetTouches"+e.targetTouches.length+"/rotation"+e.rotation+"/scale"+e.scale);
-        // }
-
-        // function findTouchCenter(e) {
-        //     let totalX = 0;
-        //     let totalY = 0;
-        //     for (let i=0; i<numTouches; i++) {
-        //         let touch = e.targetTouches[i];
-        //         totalX += touch.screenX;
-        //         totalY += touch.screenY;
-        //     }
-        //     totalX = totalX / numTouches;
-        //     totalY = totalY / numTouches;
-        //     return {totalX, totalY};
-        // }
-
-        //  //to retrive the pinch e
-        //  function dist(e) {
-        //     var zw = e.touches[0].pageX - e.touches[1].pageX, zh = e.touches[0].pageY - e.touches[1].pageY;
-        //     return Math.sqrt(zw * zw + zh * zh);
-        //   }
-
-
-        // ------------
-
-        // Apparently on Chrome + FF wheel is fired for pinch?
-        // NO. Only touchevent.
-        // function onWheel(e) {
-        //     console.log("wheel event: "+e);
-        //     console.log("WHEEL-ctrl:"+e.ctrlKey+"/deltaXY"+e.deltaX+","+e.deltaY);
-        //     e.preventDefault();
-        //     if (e.ctrlKey) {
-        //         let newScale = scale;
-        //         newScale -= e.deltaY * 0.01;
-        //         // Do not allow scale to go negative (which weirdly flips the image)
-        //         scale = newScale > 0.1 ? newScale : 0.1;
-        //     } else {
-        //         posX -= e.deltaX * 2;
-        //         posY -= e.deltaY * 2;
-        //     }
-        //     fakeScale();
-        // }
-
-        // // On Safari only, gestureEvent
-        // function onGestureStart(e) {
-        //     console.log("gesturestart event: "+e);
-        //     logGestureEvent(e);
-        // }  
-        // function onGestureChange(e) {
-        //     console.log("gesturechange event: "+e);
-        //     logGestureEvent(e);
-        // }  
-        // function onGestureEnd(e) {
-        //     console.log("gestureend event: "+e);
-        //     logGestureEvent(e);
-        // }
-
-        // function logGestureEvent(e) {
-        //     console.log("GESTURE-rotation"+e.rotation+"/scale"+e.scale);
-        // }
-    </script>
-
-
+</script>
 </html>
