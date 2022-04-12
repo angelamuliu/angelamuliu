@@ -201,6 +201,8 @@
         let el = document.querySelector(".documentBody");
         let container = document.querySelector(".moveArea");
 
+        let speedFactor = 1 / Math.log(el.offsetHeight);
+
 
         // TOUCH EVENTS
         let gesture = null;
@@ -218,12 +220,6 @@
             return Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
         }
 
-        function angle(touches) {
-            let [t1, t2] = touches;
-            let dx = t2.clientX - t1.clientX;
-            let dy = t2.clientY - t1.clientY;
-            return Math.atan2(dy, dx) * 180 / Math.PI;
-        }
         function watchTouches(e) {
             if (e.touches.length === 2) {
                 initial_touches = e.touches;
@@ -257,10 +253,9 @@
                 let mp_curr = midpoint(e.touches);
                 gesture = {
                     scale: distance(e.touches) / distance(initial_touches),
-                    // rotation: angle(e.touches) - angle(initial_touches),
                     translation: { 
-                        x: mp_curr.x - mp_init.x, 
-                        y: mp_curr.y - mp_init.y
+                        x: (mp_curr.x - mp_init.x)*speedFactor, 
+                        y: (mp_curr.y - mp_init.y)*speedFactor
                     },
                     origin: mp_init
                 };
@@ -324,11 +319,9 @@
             origin = getOrigin(el, gesture);
             applyMatrix(el, gestureToMatrix(gesture, origin).multiply(init_m));
         }
-
         function doGesture(gesture) {
             applyMatrix(el, gestureToMatrix(gesture, origin).multiply(init_m));
         };
-
         function endGesture(gesture) {
             init_m = gestureToMatrix(gesture, origin).multiply(init_m);
             applyMatrix(el, init_m);
