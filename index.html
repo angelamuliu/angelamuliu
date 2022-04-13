@@ -55,17 +55,71 @@
     // https://developer.mozilla.org/en-US/docs/Web/API/Visual_Viewport_API
     let topBar = document.querySelector(".topBar");
     let topBarContents = document.querySelector(".topBarContents");
+    let documentBody = document.querySelector("documentBody");
+
+    let timeoutId;
+    let lastResize;
+
+
+    function hideTopBar() {
+        topBar.style.display = "none";
+    }
+    function showTopBar() {
+        topBar.style.display = "block";
+    }
+    function scaleTopBar() {
+        window.requestAnimationFrame(() => {
+            showTopBar();
+
+            let scale = 1 / window.visualViewport.scale;
+            topBar.style.transform = "scale(1, " + scale + ")";
+            topBarContents.style.transform = "scale(" + scale + ", 1)";
+
+            topBar.style.left = window.visualViewport.offsetLeft;
+            let zoomOffset = (topBar.offsetHeight*scale) * (window.visualViewport.scale - 1)/2;
+            topBar.style.top = window.visualViewport.offsetTop - zoomOffset;
+            topBar.style.width = window.visualViewport.width;
+
+        });
+    }
+
+    window.visualViewport.addEventListener('resize', () => {
+        hideTopBar();
+        if (!lastResize) {
+            lastResize = Date.now();
+            clearTimeout(timeoutId);
+            timeoutId = window.setTimeout(() => {
+                scaleTopBar();
+                lastResize=null;
+            }, 1000);
+        }
+        let currentResize = Date.now();
+
+        if (currentResize - lastResize > 500) {
+            lastResize = currentResize;
+            clearTimeout(timeoutId);
+            timeoutId = window.setTimeout(() => {
+                scaleTopBar();
+                lastResize=null;
+            }, 1000);
+        }
+
+        // Record time of last resize
+        // if it's been 5 seconds since resize, move topbar
+
+        
+    });
 
     window.visualViewport.addEventListener('scroll', () => {
             window.requestAnimationFrame(() => {
                 let scale = 1 / window.visualViewport.scale;
-                topBar.style.transform = "scale(1, " + scale + ")";
-                topBarContents.style.transform = "scale(" + scale + ", 1)";
+                // topBar.style.transform = "scale(1, " + scale + ")";
+                // topBarContents.style.transform = "scale(" + scale + ", 1)";
 
                 topBar.style.left = window.visualViewport.offsetLeft;
                 let zoomOffset = (topBar.offsetHeight*scale) * (window.visualViewport.scale - 1)/2;
                 topBar.style.top = window.visualViewport.offsetTop - zoomOffset;
-                topBar.style.width = window.visualViewport.width;
+                // topBar.style.width = window.visualViewport.width;
             });
         }
     );
